@@ -1,0 +1,15 @@
+{
+    "name": "dukes-dice-roller",
+    "title": "The Duke´s dice roller",
+    "description": "A simple little dice roller.",
+    "author": "dukemadcat",
+    "version": "0.0.1",
+    "minimumCoreVersion": "0.7.9",
+    "system": "dnd5e",
+    "esmodules": [
+        "./scripts/init.mjs"
+    ],
+    "styles": [
+        "./styles/init.css"
+    ]
+}

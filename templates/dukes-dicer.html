@@ -1,0 +1,78 @@
+<div class="dukes-frame {{style}}">
+    <section class="dukes-body dukes-dice-body {{style}}">
+        <h1>Basic rolls</h1>
+        <div class="flexrow">
+            <button class="dukes-dice-btn" data-dice="d4">d4</button>
+            <button class="dukes-dice-btn" data-dice="d6">d6</button>
+            <button class="dukes-dice-btn" data-dice="d8">d8</button>
+            <button class="dukes-dice-btn" data-dice="d10">d10</button>
+        </div>
+        <div class="flexrow mt-1">
+            <button class="dukes-dice-btn" data-dice="d12">d12</button>
+            <button class="dukes-dice-btn" data-dice="d20">d20</button>
+            <button class="dukes-dice-btn" data-dice="d100">d100</button>
+            <button class="dukes-dice-btn" data-dice="dc">Coin</button>
+        </div>
+
+        <h1>Advanced rolls</h1>
+        <div class="flexrow item-center">
+            <label>Roll:</label>
+            <input id="dukes-adv-dcr-count" class="text-center" type="number" min="1" max="99" value="1">
+            <select id="dukes-adv-dcr-dice" class="ml-1">
+                <option>d4</option>
+                <option>d6</option>
+                <option>d8</option>
+                <option>d10</option>
+                <option>d12</option>
+                <option selected>d20</option>
+                <option>d100</option>
+            </select>
+            <label class="text-center">+</label>
+            <select id="dukes-adv-dcr-attr">
+                <option value="none" selected>none</option>
+                <option value="str">STR</option>
+                <option value="dex">DEX</option>
+                <option value="con">CON</option>
+                <option value="int">INT</option>
+                <option value="wis">WIS</option>
+                <option value="cha">CHA</option>
+            </select>
+            <label class="text-center">+</label>
+            <input id="dukes-adv-dcr-mod" class="text-center" type="number" value="0">
+        </div>
+        <h1>Optional settings</h1>
+        <div>
+            <label>
+                None
+                <input type="radio" id="dukes-adv-dcr-none" class="dukes-adv-dcr-option" name="dukes-adv-dcr-option" checked>
+            </label>
+        </div>
+        <div>
+            <label>
+                Explode
+                <input type="radio" id="dukes-adv-dcr-explode" class="dukes-adv-dcr-option" name="dukes-adv-dcr-option">
+            </label>
+        </div>
+        <div>
+            <label>
+                Advantage
+                <input type="radio" id="dukes-adv-dcr-advantage" class="dukes-adv-dcr-option"
+                    name="dukes-adv-dcr-option">
+            </label>
+        </div>
+        <h1>Target</h1>
+        <div class="flexrow item-center">
+            <select id="dukes-target-dcr-type" class="text-center mr-1">
+                <option value="" selected></option>
+                <option value="&gt;">greater than</option>
+                <option value="&gt;=">greater than or equal</option>
+                <option value="&lt;">lesser than</option>
+                <option value="&lt;=">lesser than or equal</option>
+            </select>
+            <input id="dukes-target-dcr-value" class="text-center ml-1" type="number" value="">
+        </div>
+    </section>
+    <footer class="dukes-footer">
+        <button id="dukes-adv-dcr-btn">Roll</button>
+    </footer>
+</div>
