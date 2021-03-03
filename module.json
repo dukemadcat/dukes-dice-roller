@@ -3,14 +3,14 @@
     "title": "The Duke´s dice roller",
     "description": "A simple roll20 inspired dice roller.",
     "author": "dukemadcat",
-    "version": "0.9.8",
+    "version": "0.9.9",
     "minimumCoreVersion": "0.7.9",
     "compatibleCoreVersion": "0.7.9",
     "url": "https://github.com/dukemadcat/dukes-dice-roller/",
     "bugs": "https://github.com/dukemadcat/dukes-dice-roller/issues",
     "readme": "https://github.com/dukemadcat/dukes-dice-roller/wiki",
     "manifest": "https://raw.githubusercontent.com/dukemadcat/dukes-dice-roller/main/module.json",
-    "download": "https://github.com/dukemadcat/dukes-dice-roller/download/latest.zip",
+    "download": "https://github.com/dukemadcat/dukes-dice-roller/archive/0.9.9.zip",
     "system": "dnd5e",
     "esmodules": [
         "./scripts/init.mjs"
