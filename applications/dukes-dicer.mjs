@@ -60,7 +60,7 @@ export default class DukesDicert extends Application {
                 }
             }
 
-            attribute = "+{" + actor.data.data.abilities[attribute].mod + "}[" + attribute.toUpperCase() + "]";
+            attribute = "+{" + actor.data.data.abilities[data.attribute].mod + "}[" + data.attribute.toUpperCase() + "]";
         }
 
         let modificator = "";
