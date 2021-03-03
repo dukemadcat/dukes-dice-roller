@@ -65,7 +65,7 @@ export default class DukesDicert extends Application {
                 count = 2;
                 dice = dice + "kh";
             }
-            if (advantage) {
+            if (disadvantage) {
                 count = 2;
                 dice = dice + "kl";
             }
