@@ -7,7 +7,7 @@ export default class DukesDicert extends Application {
             id: "dukes-dicer",
             template: "modules/dukes-dice-roller/templates/dukes-dicer.html",
             width: 475,
-            height: 520,
+            height: 560,
             minimizable: true,
             resizable: false,
             title: "The Duke´s Dice Roller",
