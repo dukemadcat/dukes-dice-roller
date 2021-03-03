@@ -22,119 +22,130 @@ export default class DukesDicert extends Application {
             return game.user.character;
         }
     }
+    getActors() {
+        var chars = [];
 
-    rollDice(dice, flavor) {
-        let roll = new Roll(dice);
-        let char = this.getActor();
-        let options = {
-            user: game.user._id,
-            speaker: ChatMessage.getSpeaker(undefined, char)
-        };
+        if (canvas.tokens.controlled.length > 0) {
+            for (let i = 0; i < canvas.tokens.controlled.length; i++) {
+                chars.push(canvas.tokens.controlled[i].actor);
+            }
+        } else if (game.user.character != null) {            
+            chars.push(game.user.character);
+        }
+
+        return chars;
+    }
+
+    async rollDice(actor, dice, mode, flavor) {
+        var roll = new Roll(dice);
+        var options = {
+            speaker: ChatMessage.getSpeaker({actor: actor}),
+        }; 
 
         if (flavor != null && flavor.length > 0) {
             options.flavor = flavor;
         }
 
-        roll.toMessage(options);
+        roll.toMessage(options, {rollMode: mode});
     }
-    
+    createDiceRoll(actor, data) {
+        let attribute = "";
+        if (data.attribute != null && data.attribute != "none") {
+            if (actor == null) {
+                if (game.user.isGM) {
+                    ui.notifications.error("In order to use an ability you need to select a token.");
+                    return;
+                } else {
+                    throw new Error("No character found");
+                }
+            }
+
+            attribute = "+{" + actor.data.data.abilities[attribute].mod + "}[" + attribute.toUpperCase() + "]";
+        }
+
+        let modificator = "";
+        if (data.modificator != null && data.modificator != 0) {
+            if (modificator > 0) {
+                modificator = "+{" + data.modificator + "}[MOD]";
+            } else {
+                modificator = "-{" + Math.abs(data.modificator) + "}[MOD]";
+            }
+        }
+
+        let flavor = "";
+        let count = data.count;
+        let dice = data.dice;
+        if (data.advantage) {
+            count = 2;
+            dice = data.dice + "kh";
+            flavor = "With advantage";
+        }
+        if (data.disadvantage) {
+            count = 2;
+            dice = data.dice + "kl";
+            flavor = "With disadvantage"
+        }
+        if (count > 1 && data.explode) {
+            dice = data.dice + "x";
+            flavor = "Exploding roll."
+        }
+
+        let result = "";
+
+        if (data.target != "" && data.border != "" && data.border != 0) {
+            result = "{" + count + dice + attribute + modificator + "}cs" + data.target + data.border;
+        } else {
+            result = count + dice + attribute + modificator;
+        }
+
+        this.rollDice(actor, result, data.mode, flavor);
+    }
 
     activateListeners(html) {
         super.activateListeners(html);
 
         html.on("click", '.dukes-dice-btn', (e) => {
-            let dice = $(e.currentTarget).data("dice");
-            let advantage = $('#dukes-adv-dcr-advantage').is(":checked");
-            let disadvantage = $('#dukes-adv-dcr-disadvantage').is(":checked");
-            let flavor = "";
+            let chars = this.getActors();
+            let data = {
+                count: 1,
+                dice: $(e.currentTarget).data("dice"),
+                advantage: $('#dukes-adv-dcr-advantage').is(":checked"),
+                disadvantage: $('#dukes-adv-dcr-disadvantage').is(":checked"),
+                target: $('#dukes-target-dcr-type').val(),
+                border: $('#dukes-target-dcr-value').val(),
+                mode: $('#dukes-mode-dcr').val()
+            };
 
-            if (advantage) {
-                dice = "2" + dice + "kh";
-                flavor = "With advantage";
-            }
-            if (disadvantage) {                
-                dice = "2" + dice + "kl";
-                flavor = "With disadvantage"
-            }
-
-            let target = $('#dukes-target-dcr-type').val();
-            let border = $('#dukes-target-dcr-value').val();
-
-            let result = "";
-
-            if (target != "" && border != "" && border != 0) {
-                result = "{" + dice + "}cs" + target + border;
+            if (chars.length > 0) {
+                for (let i = 0; i < chars.length; i++) {
+                    this.createDiceRoll(chars[i], data);
+                }
             } else {
-                result = dice;
+                this.createDiceRoll(null, data);
             }
-
-            this.rollDice(result, flavor);
         });
-        html.on("click", '#dukes-adv-dcr-btn', () => {
-            let count = $('#dukes-adv-dcr-count').val();
-            let dice = $('#dukes-adv-dcr-dice').val();
-            let mod = $('#dukes-adv-dcr-mod').val();
+        html.on("click", '#dukes-adv-dcr-btn', async () => {
+            let chars = this.getActors();
+            let data = {
+                count: $('#dukes-adv-dcr-count').val(),
+                dice: $('#dukes-adv-dcr-dice').val(),
+                modificator: $('#dukes-adv-dcr-mod').val(),
+                advantage: $('#dukes-adv-dcr-advantage').is(":checked"),
+                disadvantage: $('#dukes-adv-dcr-disadvantage').is(":checked"),
+                explode: $('#dukes-adv-dcr-explode').is(":checked"),
+                attribute: $('#dukes-adv-dcr-attr').val(),
+                target: $('#dukes-target-dcr-type').val(),
+                border: $('#dukes-target-dcr-value').val(),
+                mode: $('#dukes-mode-dcr').val()
+            };
 
-            let advantage = $('#dukes-adv-dcr-advantage').is(":checked");
-            let disadvantage = $('#dukes-adv-dcr-disadvantage').is(":checked");
-            let explode = $('#dukes-adv-dcr-explode').is(":checked");
-            let attribute = $('#dukes-adv-dcr-attr').val();
-            let flavor = "";
-
-            if (attribute != "none") {
-                let char = this.getActor();
-
-                if (char == null) {
-                    if (game.user.isGM) {
-                        ui.notifications.error("In order to use an ability you need to select a token.");
-                        return;
-                    } else {
-                        throw new Error("No character found");
-                    }
-                }
-
-                attribute = "+{" + char.data.data.abilities[attribute].mod + "}["+attribute.toUpperCase()+"]";
-            } else {
-                attribute = "";
-            }
-            
-            if (mod != 0) {
-                if (mod > 0) {
-                    mod = "+{" + mod + "}[MOD]";
-                } else {
-                    mod = "-{" + Math.abs(mod) + "}[MOD]";
+            if (chars.length > 0) {
+                for (let i = 0; i < chars.length; i++) {
+                    this.createDiceRoll(chars[i], data);
                 }
             } else {
-                mod = "";
-            }             
-
-            if (advantage) {
-                count = 2;
-                dice = dice + "kh";
-                flavor = "With advantage";
+                this.createDiceRoll(null, data);
             }
-            if (disadvantage) {
-                count = 2;
-                dice = dice + "kl";
-                flavor = "With disadvantage"
-            }
-            if (explode) {
-                dice = dice + "x";
-                flavor = "Exploding roll."
-            }
-
-            let target = $('#dukes-target-dcr-type').val();
-            let border = $('#dukes-target-dcr-value').val();
-
-            let result = "";
-
-            if (target != ""  && border != "" && border != 0) {
-                result = "{" + count + dice + attribute + mod + "}cs" + target + border;
-            } else {
-                result = count + dice + attribute + mod;
-            }
-
-            this.rollDice(result, flavor);
         });
         html.on("change", '.dukes-adv-dcr-option', (e) => {
             if ($('#dukes-adv-dcr-advantage').is(":checked") || $('#dukes-adv-dcr-disadvantage').is(":checked")) {
