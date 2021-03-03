@@ -30,9 +30,13 @@ export default class DukesDicert extends Application {
         html.on("click", '.dukes-dice-btn', (e) => {
             let dice = $(e.currentTarget).data("dice");
             let advantage = $('#dukes-adv-dcr-advantage').is(":checked");
+            let disadvantage = $('#dukes-adv-dcr-disadvantage').is(":checked");
 
             if (advantage) {
                 dice = "2" + dice + "kh";
+            }
+            if (disadvantage) {
+                dice = "2" + dice + "kl";
             }
 
             let target = $('#dukes-target-dcr-type').val();
