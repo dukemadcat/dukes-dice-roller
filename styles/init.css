@@ -42,6 +42,10 @@
     margin-top: 1px;
 }
 
+.dukes-frame .flexrow input, .dukes-frame .flexrow select {
+    height: 27px;
+}
+
 .dukes-frame .dukes-adv-dcr-option {
     top: inherit;
     float: right;
