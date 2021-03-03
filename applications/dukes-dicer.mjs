@@ -95,6 +95,10 @@ export default class DukesDicert extends Application {
                 $('#dukes-adv-dcr-count').val(null);
                 $('#dukes-adv-dcr-count').attr("disabled", true);
             } else {
+                if ($('#dukes-adv-dcr-count').val() == "") {
+                    $('#dukes-adv-dcr-count').val(1);
+                }
+
                 $('#dukes-adv-dcr-count').attr("disabled", false);
             }
         });
