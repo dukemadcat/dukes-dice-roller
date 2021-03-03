@@ -3,7 +3,7 @@
     "title": "The Duke´s dice roller",
     "description": "A simple roll20 inspired dice roller.",
     "author": "dukemadcat",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "minimumCoreVersion": "0.7.9",
     "compatibleCoreVersion": "0.7.9",
     "url": "https://github.com/dukemadcat/dukes-dice-roller/",
