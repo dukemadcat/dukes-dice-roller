@@ -6,8 +6,8 @@ export default class DukesDicert extends Application {
         return mergeObject(super.defaultOptions, {
             id: "dukes-dicer",
             template: "modules/dukes-dice-roller/templates/dukes-dicer.html",
-            width: 475,
-            height: 560,
+            width: 420,
+            height: 0,
             minimizable: true,
             resizable: false,
             title: "The Duke´s Dice Roller",
@@ -15,11 +15,20 @@ export default class DukesDicert extends Application {
         });
     }
 
+    getActor() {
+        if (canvas.tokens.controlled.length > 0) {
+            return canvas.tokens.controlled[0].actor;
+        } else {
+            return game.user.character;
+        }
+    }
+
     rollDice(dice, flavor) {
         let roll = new Roll(dice);
+        let char = this.getActor();
         let options = {
             user: game.user._id,
-            speaker: ChatMessage.getSpeaker()
+            speaker: ChatMessage.getSpeaker(undefined, char)
         };
 
         if (flavor != null && flavor.length > 0) {
@@ -28,6 +37,7 @@ export default class DukesDicert extends Application {
 
         roll.toMessage(options);
     }
+    
 
     activateListeners(html) {
         super.activateListeners(html);
@@ -71,8 +81,19 @@ export default class DukesDicert extends Application {
             let attribute = $('#dukes-adv-dcr-attr').val();
             let flavor = "";
 
-            if (attribute != "none" && !game.user.isGM) {
-                attribute = "+{" + game.user.character.data.data.abilities[attribute].mod + "}["+attribute.toUpperCase()+"]";
+            if (attribute != "none") {
+                let char = this.getActor();
+
+                if (char == null) {
+                    if (game.user.isGM) {
+                        ui.notifications.error("In order to use an ability you need to select a token.");
+                        return;
+                    } else {
+                        throw new Error("No character found");
+                    }
+                }
+
+                attribute = "+{" + char.data.data.abilities[attribute].mod + "}["+attribute.toUpperCase()+"]";
             } else {
                 attribute = "";
             }
@@ -85,8 +106,7 @@ export default class DukesDicert extends Application {
                 }
             } else {
                 mod = "";
-            }
-             
+            }             
 
             if (advantage) {
                 count = 2;

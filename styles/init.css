@@ -1,7 +1,6 @@
 .dukes-frame {
     display: flex;
     flex-direction: column;
-    padding: 0 0 16px 0;
     font-family: "Modesto Condensed", "Palatino Linotype", serif;
 }
 
@@ -15,7 +14,7 @@
 
 .dukes-footer {
     flex: 0 0 1px;
-    padding: 8px 16px 0 16px;
+    padding: 8px 16px;
     display: flex;
 }
 
@@ -40,6 +39,13 @@
 }
 .dukes-frame .mt-1 {
     margin-top: 1px;
+}
+.dukes-frame .mt-2 {
+    margin-top: 2px;
+}
+
+.dukes-frame .description {
+    font-size: 16px;
 }
 
 .dukes-frame .flexrow input, .dukes-frame .flexrow select {
