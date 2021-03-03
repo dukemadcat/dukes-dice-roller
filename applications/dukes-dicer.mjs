@@ -54,6 +54,7 @@ export default class DukesDicert extends Application {
             let mod = $('#dukes-adv-dcr-mod').val();
 
             let advantage = $('#dukes-adv-dcr-advantage').is(":checked");
+            let disadvantage = $('#dukes-adv-dcr-disadvantage').is(":checked");
             let explode = $('#dukes-adv-dcr-explode').is(":checked");
             let attribute = $('#dukes-adv-dcr-attr').val();
 
@@ -63,6 +64,10 @@ export default class DukesDicert extends Application {
             if (advantage) {
                 count = 2;
                 dice = dice + "kh";
+            }
+            if (advantage) {
+                count = 2;
+                dice = dice + "kl";
             }
             if (explode) {
                 dice = dice + "x";
@@ -82,8 +87,8 @@ export default class DukesDicert extends Application {
             this.rollDice(result);
         });
         html.on("change", '.dukes-adv-dcr-option', (e) => {
-            if ($('#dukes-adv-dcr-advantage').is(":checked")) {
-                $('#dukes-adv-dcr-count').val(2);
+            if ($('#dukes-adv-dcr-advantage').is(":checked") || $('#dukes-adv-dcr-disadvantage').is(":checked")) {
+                $('#dukes-adv-dcr-count').val(null);
                 $('#dukes-adv-dcr-count').attr("disabled", true);
             } else {
                 $('#dukes-adv-dcr-count').attr("disabled", false);
