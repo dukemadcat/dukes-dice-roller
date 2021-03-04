@@ -65,11 +65,7 @@ export default class DukesDicert extends Application {
                 }
             }
 
-<<<<<<< Updated upstream
-            attribute = "+{" + actor.data.data.abilities[data.attribute].mod + "}[" + data.attribute.toUpperCase() + "]";
-=======
             attribute = "+" + actor.data.data.abilities[data.attribute].mod + "d1[" + data.attribute.toUpperCase() + "]";
->>>>>>> Stashed changes
         }
 
         let modificator = "";
