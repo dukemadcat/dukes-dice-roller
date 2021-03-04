@@ -1,96 +1,254 @@
 <div class="dukes-frame {{style}}">
-    <section class="dukes-body dukes-dice-body {{style}}">
-        <h1>Basic rolls</h1>
-        <div class="flexrow">
-            <button class="dukes-dice-btn" data-dice="d4">d4</button>
-            <button class="dukes-dice-btn" data-dice="d6">d6</button>
-            <button class="dukes-dice-btn" data-dice="d8">d8</button>
-            <button class="dukes-dice-btn" data-dice="d10">d10</button>
-        </div>
-        <div class="flexrow mt-1">
-            <button class="dukes-dice-btn" data-dice="d12">d12</button>
-            <button class="dukes-dice-btn" data-dice="d20">d20</button>
-            <button class="dukes-dice-btn" data-dice="d100">d100</button>
-            <button class="dukes-dice-btn" data-dice="dc">Coin</button>
-        </div>
+    <nav class="dukes-tabs dukes-dice-tabs tabs border {{style}}">
+        <a class="item" data-tab="single">Single Rolls</a>
+        <a class="item" data-tab="mass">Mass Rolls</a>
+    </nav>
+    <section class="dukes-body dukes-dice-body border {{style}}">
+        <div class="tab" data-tab="single">
+            <h1>Basic rolls</h1>
+            <div class="flexrow">
+                <button class="dukes-dice-btn" data-dice="d4">d4</button>
+                <button class="dukes-dice-btn" data-dice="d6">d6</button>
+                <button class="dukes-dice-btn" data-dice="d8">d8</button>
+                <button class="dukes-dice-btn" data-dice="d10">d10</button>
+            </div>
+            <div class="flexrow mt-1">
+                <button class="dukes-dice-btn" data-dice="d12">d12</button>
+                <button class="dukes-dice-btn" data-dice="d20">d20</button>
+                <button class="dukes-dice-btn" data-dice="d100">d100</button>
+                <button class="dukes-dice-btn" data-dice="dc">Coin</button>
+            </div>
 
-        <h1>Advanced rolls</h1>
-        <div class="flexrow item-center">
-            <label>Roll:</label>
-            <input id="dukes-adv-dcr-count" class="text-center" type="number" min="1" max="99" value="1">
-            <select id="dukes-adv-dcr-dice" class="ml-1">
-                <option>d4</option>
-                <option>d6</option>
-                <option>d8</option>
-                <option>d10</option>
-                <option>d12</option>
-                <option selected>d20</option>
-                <option>d100</option>
-            </select>
-            <label class="text-center">+</label>
-            <select id="dukes-adv-dcr-attr">
-                <option value="none" selected>none</option>
-                <option value="str">STR</option>
-                <option value="dex">DEX</option>
-                <option value="con">CON</option>
-                <option value="int">INT</option>
-                <option value="wis">WIS</option>
-                <option value="cha">CHA</option>
-            </select>
-            <label class="text-center">+</label>
-            <input id="dukes-adv-dcr-mod" class="text-center" type="number" value="0">
+            <h1>Advanced rolls</h1>
+            <div class="flexrow item-center">
+                <span>Roll:</span>
+                <input id="dukes-adv-dcr-count" class="text-center" type="number" min="1" max="99" value="1">
+                <select id="dukes-adv-dcr-dice" class="ml-1">
+                    <option>d4</option>
+                    <option>d6</option>
+                    <option>d8</option>
+                    <option>d10</option>
+                    <option>d12</option>
+                    <option selected>d20</option>
+                    <option>d100</option>
+                </select>
+                <span class="text-center">+</span>
+                <select id="dukes-adv-dcr-attr">
+                    <option value="none" selected>none</option>
+                    <option value="str">STR</option>
+                    <option value="dex">DEX</option>
+                    <option value="con">CON</option>
+                    <option value="int">INT</option>
+                    <option value="wis">WIS</option>
+                    <option value="cha">CHA</option>
+                </select>
+                <span class="text-center">+</span>
+                <input id="dukes-adv-dcr-mod" class="text-center" type="number" value="0">
+            </div>
+            <div class="description">
+                In order to provide descriptiosn to fixed modifiers these modifiers need to be converted into <i>d1</i>.
+            </div>
+
+            <h1>Optional settings</h1>
+            <div class="mt-2">
+                <label>
+                    <h3>
+                        None
+                        <input type="radio" id="dukes-adv-dcr-none" class="dukes-adv-dcr-option"
+                            name="dukes-adv-dcr-option" value="0" checked>
+                    </h3>
+                </label>
+                <div class="description"></div>
+            </div>
+
+            <div class="mt-2">
+                <label>
+                    <h3>
+                        Explode
+                        <input type="radio" id="dukes-adv-dcr-explode" class="dukes-adv-dcr-option"
+                            name="dukes-adv-dcr-option" value="1">
+                    </h3>
+                </label>
+                <div class="description">If a die rolls its maximum value an additional die will be rolled.</div>
+            </div>
+
+            <div class="mt-2">
+                <label>
+                    <h3>
+                        Advantage
+                        <input type="radio" id="dukes-adv-dcr-advantage" class="dukes-adv-dcr-option"
+                            name="dukes-adv-dcr-option" value="2">
+                    </h3>
+                </label>
+                <div class="description borderless">Two dice are rolled and the higher result is retained.</div>
+            </div>
+
+            <div class="mt-2">
+                <label>
+                    <h3>
+                        Elven Accurancy
+                        <input type="checkbox" id="dukes-adv-dcr-elven" class="dukes-adv-dcr-option">
+                    </h3>
+                </label>
+                <div class="description">Roll an extra d20 with advantage to Dex, Int, Wis or Cha.</div>
+            </div>
+
+            <div class="mt-2">
+                <label>
+                    <h3>
+                        Disadvantage
+                        <input type="radio" id="dukes-adv-dcr-disadvantage" class="dukes-adv-dcr-option"
+                            name="dukes-adv-dcr-option" value="3">
+                    </h3>
+                </label>
+                <div class="description">Two dice are rolled and the lower result is retained.</div>
+            </div>
+
+            <div class="mt-2">
+                <div class="flexrow item-center">
+                    <h3>Count success</h3>
+                    <select id="dukes-target-dcr-type" class="text-center mr-1">
+                        <option value="" selected></option>
+                        <option value="&gt;">greater than</option>
+                        <option value="&gt;=">greater than or equal</option>
+                        <option value="&lt;">lesser than</option>
+                        <option value="&lt;=">lesser than or equal</option>
+                    </select>
+                    <input id="dukes-target-dcr-value" class="text-center ml-1" type="number" value="">
+                </div>
+                <div class="description">Rolls are counted that meet the specified condition.</div>
+            </div>
+            
         </div>
-        <h1>Optional settings</h1>
-        <div>
-            <label>
-                None
-                <input type="radio" id="dukes-adv-dcr-none" class="dukes-adv-dcr-option" name="dukes-adv-dcr-option" checked>
-            </label>
+        <div class="tab" data-tab="mass">
+            <h1>Used dice</h1>
+            <ol class="items-list">
+                <li class="items-header flexrow">
+                    <div class="item-detail"><i class="fas fa-dice-d20"></i></div>
+                    <div class="item-detail">Count</div>
+                    <div class="item-detail">Modifier</div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d4">d4</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d6">d6</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d8">d8</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d10">d10</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d12">d12</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d20">d20</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="d100">d100</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-mod text-center" type="number" value="0">
+                    </div>
+                </li>
+                <li class="item flexrow mass-dice-row">
+                    <div class="item-detail">
+                        <button class="dukes-mass-dice-btn" data-dice="dc">Coin</button>
+                    </div>
+                    <div class="item-detail">
+                        <input class="dukes-mass-dice-count text-center" type="number" min="0" max="99" value="0">
+                    </div>
+                    <div class="item-detail"></div>
+                </li>
+            </ol>
+
+            <h1>Optional settings</h1>
+            <div class="mt-2">
+                <div class="flexrow item-center">
+                    <h3>Collective modifier</h3>
+                    <input id="dukes-mass-dice-collective-mod" class="text-center" type="number" value="0">
+                </div>
+                <div class="description">A modifier that is added to each dice roll.</div>
+            </div>
+            <div class="mt-2">
+                <div class="flexrow item-center mt-1">
+                    <h3>Overall Modifier</h3>
+                    <input id="dukes-mass-dice-overall-mod" class="text-center" type="number" value="0">
+                </div>
+                <div class="description">A modifier that is added once to the sum of all dice rolls.</div>
+            </div>
         </div>
-        <div class="mt-2">
-            <label>
-                Explode
-                <input type="radio" id="dukes-adv-dcr-explode" class="dukes-adv-dcr-option" name="dukes-adv-dcr-option">                
-            </label>
-            <div class="description">If a die rolls its maximum value another die will be rolled additionally.</div>
-        </div>
-        
-        <div class="mt-2">
-            <label>
-                Advantage
-                <input type="radio" id="dukes-adv-dcr-advantage" class="dukes-adv-dcr-option" name="dukes-adv-dcr-option">
-            </label>
-            <div class="description">Two dice are rolled and the higher result is retained.</div>
-        </div>
-        <div class="mt-2">
-            <label>
-                Disadvantage
-                <input type="radio" id="dukes-adv-dcr-disadvantage" class="dukes-adv-dcr-option" name="dukes-adv-dcr-option">
-            </label>
-            <div class="description">Two dice are rolled and the lower result is retained.</div>
-        </div>
-        <h1>Target</h1>
-        <div class="flexrow item-center">
-            <select id="dukes-target-dcr-type" class="text-center mr-1">
-                <option value="" selected></option>
-                <option value="&gt;">greater than</option>
-                <option value="&gt;=">greater than or equal</option>
-                <option value="&lt;">lesser than</option>
-                <option value="&lt;=">lesser than or equal</option>
-            </select>
-            <input id="dukes-target-dcr-value" class="text-center ml-1" type="number" value="">
-        </div>
-        <h1>Mode</h1>
-        <div class="flexrow item-center">
-            <select id="dukes-mode-dcr" class="text-center">
-                <option value="roll" selected>Public Roll</option>
-                <option value="gmroll">GM Roll</option>
-                <option value="blindroll">Blind Roll</option>
-                <option value="selfroll">Self Roll</option>
-            </select>
-        </div>    
     </section>
     <footer class="dukes-footer">
-        <button id="dukes-adv-dcr-btn">Roll</button>
+        <div class="flexrow item-center mt-2">
+            <h3>Mode</h3>
+            <div class="flexrow item-center">
+                <select id="dukes-mode-dcr" class="text-center">
+                    <option value="roll" selected>Public Roll</option>
+                    <option value="gmroll">GM Roll</option>
+                    <option value="blindroll">Blind Roll</option>
+                    <option value="selfroll">Self Roll</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="dukes-adv-dcr-btn" class="mt-2">
+            <i class="fas fa-dice"></i>
+            Roll
+        </button>
     </footer>
 </div>

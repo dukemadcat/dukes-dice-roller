@@ -11,17 +11,10 @@ export default class DukesDicert extends Application {
             minimizable: true,
             resizable: false,
             title: "The Duke´s Dice Roller",
-            tabs: [{ contentSelector: ".dukes-dice-body" }]
+            tabs: [{ navSelector: ".dukes-dice-tabs", contentSelector: ".dukes-dice-body", initial: "single" }]
         });
     }
 
-    getActor() {
-        if (canvas.tokens.controlled.length > 0) {
-            return canvas.tokens.controlled[0].actor;
-        } else {
-            return game.user.character;
-        }
-    }
     getActors() {
         var chars = [];
 
@@ -29,24 +22,36 @@ export default class DukesDicert extends Application {
             for (let i = 0; i < canvas.tokens.controlled.length; i++) {
                 chars.push(canvas.tokens.controlled[i].actor);
             }
-        } else if (game.user.character != null) {            
+        } else if (game.user.character != null) {
             chars.push(game.user.character);
         }
 
         return chars;
     }
+    createDefaultData() {
+        return {
+            count: 0,
+            advantage: $('#dukes-adv-dcr-advantage').is(":checked"),
+            disadvantage: $('#dukes-adv-dcr-disadvantage').is(":checked"),
+            target: $('#dukes-target-dcr-type').val(),
+            border: parseInt($('#dukes-target-dcr-value').val()) ?? 0,
+            mode: $('#dukes-mode-dcr').val(),
+            elvish: $('#dukes-adv-dcr-elven').is(":checked"),
+            flavor: ""
+        };
+    }
 
-    async rollDice(actor, dice, mode, flavor) {
+    rollDice(actor, dice, mode, flavor) {
         var roll = new Roll(dice);
         var options = {
-            speaker: ChatMessage.getSpeaker({actor: actor}),
-        }; 
+            speaker: ChatMessage.getSpeaker({ actor: actor }),
+        };
 
         if (flavor != null && flavor.length > 0) {
             options.flavor = flavor;
         }
 
-        roll.toMessage(options, {rollMode: mode});
+        roll.toMessage(options, { rollMode: mode });
     }
     createDiceRoll(actor, data) {
         let attribute = "";
@@ -60,23 +65,27 @@ export default class DukesDicert extends Application {
                 }
             }
 
+<<<<<<< Updated upstream
             attribute = "+{" + actor.data.data.abilities[data.attribute].mod + "}[" + data.attribute.toUpperCase() + "]";
+=======
+            attribute = "+" + actor.data.data.abilities[data.attribute].mod + "d1[" + data.attribute.toUpperCase() + "]";
+>>>>>>> Stashed changes
         }
 
         let modificator = "";
         if (data.modificator != null && data.modificator != 0) {
             if (modificator > 0) {
-                modificator = "+{" + data.modificator + "}[MOD]";
+                modificator = "+" + data.modificator + "d1[MOD]";
             } else {
-                modificator = "-{" + Math.abs(data.modificator) + "}[MOD]";
+                modificator = "+" + data.modificator + "d1[MOD]";
             }
         }
 
-        let flavor = "";
+        let flavor = data.flavor;
         let count = data.count;
         let dice = data.dice;
         if (data.advantage) {
-            count = 2;
+            count = 2 + (data.elvish ? 1 : 0);
             dice = data.dice + "kh";
             flavor = "With advantage";
         }
@@ -92,13 +101,74 @@ export default class DukesDicert extends Application {
 
         let result = "";
 
-        if (data.target != "" && data.border != "" && data.border != 0) {
-            result = "{" + count + dice + attribute + modificator + "}cs" + data.target + data.border;
+        if (data.target != "" && data.border != 0) {
+            result = "{" + (count > 0 ? count : "") + dice + attribute + modificator + "}cs" + data.target + data.border;
         } else {
-            result = count + dice + attribute + modificator;
+            result = (count > 0 ? count : "") + dice + attribute + modificator;
         }
 
         this.rollDice(actor, result, data.mode, flavor);
+    }
+
+    rollAdvancedDice() {
+        let chars = this.getActors();
+        let data = mergeObject(this.createDefaultData(), {
+            count: parseInt($('#dukes-adv-dcr-count').val()) ?? 0,
+            dice: $('#dukes-adv-dcr-dice').val(),
+            modificator: parseInt( $('#dukes-adv-dcr-mod').val()) ?? 0,
+            explode: $('#dukes-adv-dcr-explode').is(":checked"),
+            attribute: $('#dukes-adv-dcr-attr').val()
+        } );
+
+        if (chars.length > 0) {
+            for (let i = 0; i < chars.length; i++) {
+                this.createDiceRoll(chars[i], data);
+            }
+        } else {
+            this.createDiceRoll(null, data);
+        }
+    }
+
+    rollMassDice() {
+        let dice = "";
+        let collective_mod = parseInt($('#dukes-mass-dice-collective-mod').val()) ?? 0;
+        let overall_mod = parseInt($('#dukes-mass-dice-overall-mod').val()) ?? 0;
+
+        $(".mass-dice-row").each((i, e) => {
+            let die = $(e).find(".dukes-mass-dice-btn").data("dice");
+            let count = parseInt($(e).find(".dukes-mass-dice-count").val()) ?? 0;
+            let mod = (die != "dc" ? (parseInt($(e).find(".dukes-mass-dice-mod").val()) ?? 0) : 0);
+
+            if (count > 0) {
+                let roll = "{" + count + die + (mod != 0 ? "+" + mod : "") + (collective_mod != 0 && die != "dc" ? "+" + collective_mod : "") + "}";
+
+                if (dice.length > 0) {
+                    dice += "+" + roll;
+                } else {
+                    dice = roll;
+                }
+            }
+        }).promise().done(() => {
+            if (dice.length > 0) {
+                if (overall_mod != 0) {
+                    dice = dice + "+" + overall_mod;
+                }
+
+                let char = game.user.character;
+                let data = mergeObject(this.createDefaultData(), {
+                    advantage: false,
+                    diadvantage: false,
+                    explode: false,
+                    elvish: false,
+                    flavor: "Massroll",
+                    dice: dice,
+                    border: 0,
+                    target: ""
+                });
+
+                this.createDiceRoll(char, data);
+            }
+        });
     }
 
     activateListeners(html) {
@@ -106,15 +176,10 @@ export default class DukesDicert extends Application {
 
         html.on("click", '.dukes-dice-btn', (e) => {
             let chars = this.getActors();
-            let data = {
+            let data = mergeObject(this.createDefaultData(), {
                 count: 1,
-                dice: $(e.currentTarget).data("dice"),
-                advantage: $('#dukes-adv-dcr-advantage').is(":checked"),
-                disadvantage: $('#dukes-adv-dcr-disadvantage').is(":checked"),
-                target: $('#dukes-target-dcr-type').val(),
-                border: $('#dukes-target-dcr-value').val(),
-                mode: $('#dukes-mode-dcr').val()
-            };
+                dice: $(e.currentTarget).data("dice")
+            });
 
             if (chars.length > 0) {
                 for (let i = 0; i < chars.length; i++) {
@@ -124,29 +189,22 @@ export default class DukesDicert extends Application {
                 this.createDiceRoll(null, data);
             }
         });
-        html.on("click", '#dukes-adv-dcr-btn', async () => {
-            let chars = this.getActors();
-            let data = {
-                count: $('#dukes-adv-dcr-count').val(),
-                dice: $('#dukes-adv-dcr-dice').val(),
-                modificator: $('#dukes-adv-dcr-mod').val(),
-                advantage: $('#dukes-adv-dcr-advantage').is(":checked"),
-                disadvantage: $('#dukes-adv-dcr-disadvantage').is(":checked"),
-                explode: $('#dukes-adv-dcr-explode').is(":checked"),
-                attribute: $('#dukes-adv-dcr-attr').val(),
-                target: $('#dukes-target-dcr-type').val(),
-                border: $('#dukes-target-dcr-value').val(),
-                mode: $('#dukes-mode-dcr').val()
-            };
+        html.on("click", ".dukes-mass-dice-btn", (e) => {
+            let count = $(e.currentTarget).closest('.mass-dice-row').find(".dukes-mass-dice-count");
+            let value = $(count).val();
 
-            if (chars.length > 0) {
-                for (let i = 0; i < chars.length; i++) {
-                    this.createDiceRoll(chars[i], data);
-                }
-            } else {
-                this.createDiceRoll(null, data);
+            if (parseInt(value) < 99) {
+                $(count).val(parseInt(value) + 1);
             }
         });
+        html.on("click", '#dukes-adv-dcr-btn', () => {
+            if ($("a.item[data-tab='single'").hasClass("active")) {
+                this.rollAdvancedDice();
+            } else if ($("a.item[data-tab='mass'").hasClass("active")) {
+                this.rollMassDice();
+            }
+        });
+
         html.on("change", '.dukes-adv-dcr-option', (e) => {
             if ($('#dukes-adv-dcr-advantage').is(":checked") || $('#dukes-adv-dcr-disadvantage').is(":checked")) {
                 $('#dukes-adv-dcr-count').val(null);
