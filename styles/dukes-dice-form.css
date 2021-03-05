@@ -1,0 +1,86 @@
+.dukes-frame {
+    display: flex;
+    flex-direction: column;
+}
+
+.dukes-tabs {
+    padding-bottom: 0.5rem;
+}
+
+.dukes-tabs .item {
+    height: 30px;
+    line-height: 32px;
+    margin: 0 24px;
+    border-bottom: 3px solid #b5b3a4;
+}
+.dukes-tabs .item.active {
+    text-shadow: 0 0 10px red;
+    border-bottom: 3px solid #44191a;
+}
+
+.dukes-body {
+    flex: 1;
+    padding: 0 1rem 1rem 1rem;
+}
+
+.dukes-footer {
+    flex: 0 0 1px;
+    padding: 0rem 1rem 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dukes-frame h1,
+.dukes-frame h2,
+.dukes-frame h3,
+.dukes-frame h4,
+.dukes-frame h5,
+.dukes-frame h6 {
+    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+}
+.dukes-frame h1 {
+    margin-top: 0.5rem;
+    font-size: 24px;
+}
+.dukes-frame h3 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.dukes-frame button {
+    margin: initial;
+}
+
+.dukes-frame .item-center {
+    align-items: center;
+}
+
+.dukes-frame .text-center {
+    text-align: center;
+}
+
+.dukes-frame .flexrow input,
+.dukes-frame .flexrow select {
+    height: 27px;
+}
+
+.dukes-frame .dukes-dice-btn {
+    margin: 0px 1px;
+}
+
+.dukes-frame .dukes-adv-dcr-option {
+    float: right;
+    height: 16px;
+    width: 16px;
+    margin: 0px;
+}
+
+.dukes-frame .border {
+    border-bottom: 2px groove #eeede0;
+}
+
+.dukes-frame .description {
+    margin-top: 5px;
+    color: #7a7971;
+    font-size: 12px;
+}

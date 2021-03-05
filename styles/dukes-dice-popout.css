@@ -1,0 +1,32 @@
+.dukes-dice-popout {
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px #000;
+    color: #BBB;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin: 0 0 0 48px;
+    display: none;
+    position:fixed;
+}
+
+.dukes-dice-popout-btn {
+    border-right: 1px solid #B0B0B080;
+    align-items: center;
+    padding: 3px!important;
+    width: 48px;
+    cursor: pointer;
+}
+.dukes-dice-popout-btn:hover {
+    color: #FFF;
+    background-color: #FFFFFF20;
+}
+
+.dukes-dice-popout-btn:last-child{
+    border-right: none;
+}
+.dukes-dice-popout-row {
+    border-bottom: 1px solid #B0B0B080;
+}
+.dukes-dice-popout-row:last-child {
+    border-bottom: none;
+}

@@ -1,24 +1,10 @@
 <div class="dukes-frame {{style}}">
     <nav class="dukes-tabs dukes-dice-tabs tabs border {{style}}">
-        <a class="item" data-tab="single">Single Rolls</a>
+        <a class="item" data-tab="advanced">Advanced Rolls</a>
         <a class="item" data-tab="mass">Mass Rolls</a>
     </nav>
     <section class="dukes-body dukes-dice-body border {{style}}">
-        <div class="tab" data-tab="single">
-            <h1>Basic rolls</h1>
-            <div class="flexrow">
-                <button class="dukes-dice-btn" data-dice="d4">d4</button>
-                <button class="dukes-dice-btn" data-dice="d6">d6</button>
-                <button class="dukes-dice-btn" data-dice="d8">d8</button>
-                <button class="dukes-dice-btn" data-dice="d10">d10</button>
-            </div>
-            <div class="flexrow mt-1">
-                <button class="dukes-dice-btn" data-dice="d12">d12</button>
-                <button class="dukes-dice-btn" data-dice="d20">d20</button>
-                <button class="dukes-dice-btn" data-dice="d100">d100</button>
-                <button class="dukes-dice-btn" data-dice="dc">Coin</button>
-            </div>
-
+        <div class="tab" data-tab="advanced">
             <h1>Advanced rolls</h1>
             <div class="flexrow item-center">
                 <span>Roll:</span>
@@ -104,7 +90,7 @@
                 <div class="description">Two dice are rolled and the lower result is retained.</div>
             </div>
 
-            <div class="mt-2">
+            <div class="mt-2 mb-5">
                 <div class="flexrow item-center">
                     <h3>Count success</h3>
                     <select id="dukes-target-dcr-type" class="text-center mr-1">
@@ -122,7 +108,7 @@
         </div>
         <div class="tab" data-tab="mass">
             <h1>Used dice</h1>
-            <ol class="items-list">
+            <ol class="dukes-items-list">
                 <li class="items-header flexrow">
                     <div class="item-detail"><i class="fas fa-dice-d20"></i></div>
                     <div class="item-detail">Count</div>
