@@ -1,13 +1,14 @@
-export default class DukesDicert extends Application {
+import DukesUtilities from "../scripts/utilities.mjs";
+
+export default class DukesDiceForm extends Application {
 
     constructor() { super(); }
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             id: "dukes-dicer",
-            template: "modules/dukes-dice-roller/templates/dukes-dicer.html",
-            width: 420,
-            height: 0,
+            template: "modules/dukes-dice-roller/templates/dukes-dice-form.html",
+            width: 440,
             minimizable: true,
             resizable: false,
             title: "The Duke´s Dice Roller",
@@ -15,99 +16,24 @@ export default class DukesDicert extends Application {
         });
     }
 
-    getActors() {
-        var chars = [];
-
-        if (canvas.tokens.controlled.length > 0) {
-            for (let i = 0; i < canvas.tokens.controlled.length; i++) {
-                chars.push(canvas.tokens.controlled[i].actor);
-            }
-        } else if (game.user.character != null) {
-            chars.push(game.user.character);
-        }
-
-        return chars;
+    static show() {
+        let form = new DukesDiceForm();
+        form.render(true);
     }
+
     createDefaultData() {
-        return {
-            count: 0,
+        return mergeObject(DukesUtilities.getDefaultRoll(), {
             advantage: $('#dukes-adv-dcr-advantage').is(":checked"),
             disadvantage: $('#dukes-adv-dcr-disadvantage').is(":checked"),
             target: $('#dukes-target-dcr-type').val(),
             border: parseInt($('#dukes-target-dcr-value').val()) ?? 0,
             mode: $('#dukes-mode-dcr').val(),
-            elvish: $('#dukes-adv-dcr-elven').is(":checked"),
-            flavor: ""
-        };
-    }
-
-    rollDice(actor, dice, mode, flavor) {
-        var roll = new Roll(dice);
-        var options = {
-            speaker: ChatMessage.getSpeaker({ actor: actor }),
-        };
-
-        if (flavor != null && flavor.length > 0) {
-            options.flavor = flavor;
-        }
-
-        roll.toMessage(options, { rollMode: mode });
-    }
-    createDiceRoll(actor, data) {
-        let attribute = "";
-        if (data.attribute != null && data.attribute != "none") {
-            if (actor == null) {
-                if (game.user.isGM) {
-                    ui.notifications.error("In order to use an ability you need to select a token.");
-                    return;
-                } else {
-                    throw new Error("No character found");
-                }
-            }
-
-            attribute = "+" + actor.data.data.abilities[data.attribute].mod + "d1[" + data.attribute.toUpperCase() + "]";
-        }
-
-        let modificator = "";
-        if (data.modificator != null && data.modificator != 0) {
-            if (modificator > 0) {
-                modificator = "+" + data.modificator + "d1[MOD]";
-            } else {
-                modificator = "+" + data.modificator + "d1[MOD]";
-            }
-        }
-
-        let flavor = data.flavor;
-        let count = data.count;
-        let dice = data.dice;
-        if (data.advantage) {
-            count = 2 + (data.elvish ? 1 : 0);
-            dice = data.dice + "kh";
-            flavor = "With advantage";
-        }
-        if (data.disadvantage) {
-            count = 2;
-            dice = data.dice + "kl";
-            flavor = "With disadvantage"
-        }
-        if (count > 1 && data.explode) {
-            dice = data.dice + "x";
-            flavor = "Exploding roll."
-        }
-
-        let result = "";
-
-        if (data.target != "" && data.border != 0) {
-            result = "{" + (count > 0 ? count : "") + dice + attribute + modificator + "}cs" + data.target + data.border;
-        } else {
-            result = (count > 0 ? count : "") + dice + attribute + modificator;
-        }
-
-        this.rollDice(actor, result, data.mode, flavor);
+            elvish: $('#dukes-adv-dcr-elven').is(":checked")
+        });
     }
 
     rollAdvancedDice() {
-        let chars = this.getActors();
+        let chars = DukesUtilities.getActors();
         let data = mergeObject(this.createDefaultData(), {
             count: parseInt($('#dukes-adv-dcr-count').val()) ?? 0,
             dice: $('#dukes-adv-dcr-dice').val(),
@@ -118,10 +44,10 @@ export default class DukesDicert extends Application {
 
         if (chars.length > 0) {
             for (let i = 0; i < chars.length; i++) {
-                this.createDiceRoll(chars[i], data);
+                DukesUtilities.createDiceRoll(chars[i], data);
             }
         } else {
-            this.createDiceRoll(null, data);
+            DukesUtilities.createDiceRoll(null, data);
         }
     }
 
@@ -162,7 +88,7 @@ export default class DukesDicert extends Application {
                     target: ""
                 });
 
-                this.createDiceRoll(char, data);
+                DukesUtilities.createDiceRoll(char, data);
             }
         });
     }
@@ -170,21 +96,6 @@ export default class DukesDicert extends Application {
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.on("click", '.dukes-dice-btn', (e) => {
-            let chars = this.getActors();
-            let data = mergeObject(this.createDefaultData(), {
-                count: 1,
-                dice: $(e.currentTarget).data("dice")
-            });
-
-            if (chars.length > 0) {
-                for (let i = 0; i < chars.length; i++) {
-                    this.createDiceRoll(chars[i], data);
-                }
-            } else {
-                this.createDiceRoll(null, data);
-            }
-        });
         html.on("click", ".dukes-mass-dice-btn", (e) => {
             let count = $(e.currentTarget).closest('.mass-dice-row').find(".dukes-mass-dice-count");
             let value = $(count).val();
@@ -194,7 +105,7 @@ export default class DukesDicert extends Application {
             }
         });
         html.on("click", '#dukes-adv-dcr-btn', () => {
-            if ($("a.item[data-tab='single'").hasClass("active")) {
+            if ($("a.item[data-tab='advanced'").hasClass("active")) {
                 this.rollAdvancedDice();
             } else if ($("a.item[data-tab='mass'").hasClass("active")) {
                 this.rollMassDice();
