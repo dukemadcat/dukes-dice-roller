@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.10] 2021-03-05
+### Added
+- Quick Roll added
+### Changed
+- **Single Roll** renamed to **Advanced Roll**
+### Removed
+- ~Basic Roll~ on Advanced Roll tab because **Quick Roll** was added.
+
 ## [1.0.9] 2021-03-05
 ### Added
 - Mass Roll added
