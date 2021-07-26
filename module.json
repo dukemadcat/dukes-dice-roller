@@ -10,7 +10,7 @@
     "bugs": "https://github.com/dukemadcat/dukes-dice-roller/issues",
     "readme": "https://github.com/dukemadcat/dukes-dice-roller/wiki",
     "manifest": "https://raw.githubusercontent.com/dukemadcat/dukes-dice-roller/main/module.json",
-    "download": "https://github.com/dukemadcat/dukes-dice-roller/archive/1.0.10.zip",
+    "download": "https://github.com/dukemadcat/dukes-dice-roller/archive/1.0.11.zip",
     "system": "dnd5e",
     "esmodules": [
         "./scripts/init.mjs"
