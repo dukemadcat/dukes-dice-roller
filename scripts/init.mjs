@@ -27,24 +27,21 @@ Hooks.on('getSceneControlButtons', (controls) => {
 });
 
 Hooks.once("ready", () => {
-    $('body').on("dblclick", "li.scene-control[data-control='dukes-dice-roller-button']", function () {
+    $('body').on("click", "li.scene-control[data-control='dukes-dice-roller-button']", function (e) {
         $(".scene-control[data='dukes-dice-roller-button'").removeClass('active');
+        $(".dukes-dice-popout").hide();
 
+        DukesDiceForm.show();
     });
-    $('body').on("mouseup", "li.scene-control[data-control='dukes-dice-roller-button']", function (e) {
-        $(".scene-control[data='dukes-dice-roller-button'").removeClass('active');
+    $('body').on("mouseenter", "li.scene-control", function (e) {
+        if ($(e.currentTarget).data('control') == 'dukes-dice-roller-button') {
+            let o = $(e.currentTarget).offset();
 
-        switch (e.button) {
-            case 0:
-                DukesDiceForm.show();
-                break;
-            case 2:
-                let o = $(e.currentTarget).offset();
-
-                $('.dukes-dice-popout')
-                    .css({ top: o.top, left: o.left })
-                    .show();
-                break;
+            $('.dukes-dice-popout')
+                .css({ top: o.top, left: o.left })
+                .show();
+        } else {
+            $(".dukes-dice-popout").hide();
         }
 
 

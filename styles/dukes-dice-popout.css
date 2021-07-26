@@ -9,19 +9,23 @@
     position:fixed;
 }
 
-.dukes-dice-popout-btn {
+.dukes-dice-popout-btn, .dukes-dice-popout-toggle {
     border-right: 1px solid #B0B0B080;
     align-items: center;
     padding: 3px!important;
     width: 48px;
     cursor: pointer;
 }
-.dukes-dice-popout-btn:hover {
+.dukes-dice-popout-btn:hover, .dukes-dice-popout-toggle:hover {
     color: #FFF;
     background-color: #FFFFFF20;
 }
+.dukes-dice-popout-toggle.toggled {
+    color: #FFF;
+    background-color: #ffffff3b;
+}
 
-.dukes-dice-popout-btn:last-child{
+.dukes-dice-popout-btn:last-child, .dukes-dice-popout-toggle:last-child {
     border-right: none;
 }
 .dukes-dice-popout-row {

@@ -44,7 +44,7 @@
                             name="dukes-adv-dcr-option" value="0" checked>
                     </h3>
                 </label>
-                <div class="description"></div>
+                <div class="description">&nbsp;</div>
             </div>
 
             <div class="mt-2">
@@ -104,7 +104,8 @@
                 </div>
                 <div class="description">Rolls are counted that meet the specified condition.</div>
             </div>
-            
+            <div class="mb-5">&nbsp;</div>
+            <div class="mb-1">&nbsp;</div>
         </div>
         <div class="tab" data-tab="mass">
             <h1>Used dice</h1>
@@ -217,6 +218,29 @@
                 </div>
                 <div class="description">A modifier that is added once to the sum of all dice rolls.</div>
             </div>
+            <div class="mt-2">
+                <div class="flexrow item-center">
+                    <h3>Count success</h3>
+                    <select id="dukes-mass-dice-target-type" class="text-center mr-1">
+                        <option value="" selected></option>
+                        <option value="&gt;">greater than</option>
+                        <option value="&gt;=">greater than or equal</option>
+                        <option value="&lt;">lesser than</option>
+                        <option value="&lt;=">lesser than or equal</option>
+                    </select>
+                    <input id="dukes-mass-dice-target-value" class="text-center ml-1" type="number" value="">
+                </div>
+                <div class="description">Rolls are counted that meet the specified condition.</div>
+            </div>
+            <div class="mt-2">
+                <label>
+                    <h3>
+                        Summarize rolls
+                        <input type="checkbox" id="dukes-mass-dice-sum" class="dukes-adv-dcr-option" checked="true">
+                    </h3>
+                </label>
+                <div class="description">If not checked all rolls every single roll will be added as one die.</div>
+            </div>
         </div>
     </section>
     <footer class="dukes-footer">
@@ -231,10 +255,15 @@
                 </select>
             </div>
         </div>
-
-        <button id="dukes-adv-dcr-btn" class="mt-2">
-            <i class="fas fa-dice"></i>
-            Roll
-        </button>
+        <div class="flexrow item-center mt-2">
+            <button id="dukes-adv-dcr-roll" class="mr-1">
+                <i class="fas fa-dice"></i>
+                Roll
+            </button>
+            <button id="dukes-adv-dcr-undo" class="ml-1">
+                <i class="fas fa-undo"></i>
+                Reset
+            </button>
+        </div>
     </footer>
 </div>

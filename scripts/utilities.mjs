@@ -1,5 +1,4 @@
-export default class DukesUtilities 
-{
+export default class DukesUtilities {
     static getActor() {
         return game.user.character;
     }
@@ -31,42 +30,62 @@ export default class DukesUtilities
         roll.toMessage(options, { rollMode: mode });
     }
 
-    static getDefaultRoll() {
+    static getDefaultAdvancedRoll() {
         return {
             advantage: false,
             disadvantage: false,
+            modificator: 0,
             target: "",
             border: 0,
             mode: "roll",
             elvish: false,
-            flavor: "",
+            flavor: "Advanced Roll",
             count: 0,
             dice: ""
         };
     }
+    static getDefaultMassRoll() {
+        return {
+            mode: "roll",
+            sum: true,
+            flavor: "Massroll",
+            modificator: 0,
+            target: "",
+            border: 0,
+            dice: []
+        }
+    }
 
-    static createDiceRoll(actor, data) {
+    static createDiceMod(mod, flavor, dice) {
+        if (mod >= 0) {
+            return dice
+                ? "+" + mod + "d1[" + flavor + "]"
+                : "+{" + mod + "}[" + flavor + "]";
+        } else {
+            return dice
+                ? "-" + Math.abs(mod) + "d1[" + flavor + "]"
+                : "-{" + Math.abs(mod) + "}[" + flavor + "]";
+        }
+    }
+
+    static createAdvancedRoll(actor, data) {
         let attribute = "";
         if (data.attribute != null && data.attribute != "none") {
             if (actor == null) {
                 if (game.user.isGM) {
-                    ui.notifications.error("In order to use an ability you need to select a token.");
+                    ui.notifications.warn("In order to use an ability you need to select a token.");
                     return;
                 } else {
                     throw new Error("No character found");
                 }
             }
 
-            attribute = "+" + actor.data.data.abilities[data.attribute].mod + "d1[" + data.attribute.toUpperCase() + "]";
+            attribute = this.createDiceMod(actor.data.data.abilities[data.attribute].mod, data.attribute.toUpperCase(), data.border > 0);
         }
 
         let modificator = "";
-        if (data.modificator != null && data.modificator != 0) {
-            if (modificator > 0) {
-                modificator = "+" + data.modificator + "d1[MOD]";
-            } else {
-                modificator = "+" + data.modificator + "d1[MOD]";
-            }
+        if (data.modificator != 0) {
+            modificator = this.createDiceMod(data.modificator, "MOD", data.border > 0)
         }
 
         let flavor = data.flavor;
@@ -75,16 +94,16 @@ export default class DukesUtilities
         if (data.advantage) {
             count = 2 + (data.elvish ? 1 : 0);
             dice = data.dice + "kh";
-            flavor = "With advantage";
+            flavor += " with advantage";
         }
         if (data.disadvantage) {
             count = 2;
             dice = data.dice + "kl";
-            flavor = "With disadvantage"
+            flavor += " with disadvantage"
         }
         if (data.explode) {
             dice = data.dice + "x";
-            flavor = "Exploding roll."
+            flavor += " (exploded)"
         }
 
         let result = "";
@@ -96,6 +115,55 @@ export default class DukesUtilities
         }
 
         this.rollDice(actor, result, data.mode, flavor);
+    }
+
+    static async createMassRoll(actor, data) {
+        if (data.target != "" && data.border != 0) {
+            const dice = "{" + data.dice.join(",") + "}cs" + data.target + data.border;
+            this.rollDice(actor, dice, data.mode, data.flavor);
+        } else {
+            if (data.sum || data.dice.length == 1) {
+                let dice = data.dice.length > 1
+                         ? "{" + data.dice.join("} + {") + "}"
+                         : data.dice.join(" + ");
+    
+                if (data.modificator > 0)
+                    dice += "+" + data.modificator;
+                else if (data.modificator < 0)
+                    dice += "-" + Math.abs(data.modificator);
+    
+                this.rollDice(actor, dice, data.mode, data.flavor);
+            } else {
+                const html = [];
+                for (let die of data.dice) {
+                    let roll = new Roll(die);
+                    await roll.roll();
+    
+                    let rollHtml = $(await roll.render());
+                    rollHtml.addClass("mb-1");
+                    rollHtml.find(".dice-result").css({
+                        'clear': 'both',
+                        'display': 'flex',
+                        'justifyContent': 'space-between'
+                    });
+                    rollHtml.find(".dice-formula,.dice-tooltip").wrapAll('<div style="display: flex; flex: 1;"><div style="flex: 1;"></div></div>');
+                    rollHtml.find(".dice-formula").css('marginBottom', '0px');
+                    rollHtml.find(".dice-total").wrap('<div style="display: flex; flex: 1;"></div>');
+                    rollHtml.find(".dice-total").css('flex', "1");
+    
+                    html.push(rollHtml.prop("outerHTML"));
+                }
+    
+                ChatMessage.create({
+                    content: html.join("\r\n"),
+                    speaker: {
+                        actor: actor
+                    },
+                    rollMode: data.mode,
+                    flavor: data.flavor
+                });
+            }
+        }
     }
 
     static log(msg) {
