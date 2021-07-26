@@ -1,25 +1,37 @@
 # Changelog
+## [1.0.11] 2021-07-26
+### Added
+- Roll mode options added to **Quick Roll**.
+- Summorize option added to **Quick Roll**.
+- Reset Button added to **Dice Roller** window.
+- **Count success** option added to **Mass Roll** tab.
+- **Summorize Rolls** option added to **Mass Roll** tab.
+### Removed
+- ~~Count success~~ option on **Advanced Roll** tab removed.
+### Changed
+- Mouse over opens now **Quick Roll** menu.
+- Left click opens now **Dice Roller** window.
 
 ## [1.0.10] 2021-03-05
 ### Added
 - Quick Roll added
-### Changed
-- **Single Roll** renamed to **Advanced Roll**
 ### Removed
-- ~Basic Roll~ on Advanced Roll tab because **Quick Roll** was added.
+- ~~Basic Roll~~ on **Advanced Roll** tab because **Quick Roll** was added.
+### Changed
+- **Single Roll** renamed to **Advanced Roll** tab.
 
 ## [1.0.9] 2021-03-05
 ### Added
-- Mass Roll added
+- **Mass Roll** tab added.
 - Design Updates
 
 ## [1.0.8] 2021-03-04
 ### Added
-- Multiple rolls for selected tokens added
+- Multiple rolls for selected tokens added.
 
 ## [1.0.7] 2021-03-03
 ### Fixed
-- Attribute modifiers
+- Attribute modifiers.
 
 ## [1.0.6] 21-03-03
 ### Added
@@ -44,5 +56,5 @@
 
 ## [0.9.3] 2021-03-03
 ### Added
-- Advanced roll feature.
-- Disadvanced roll feature.
+- Advantage roll feature.
+- Disadvantage roll feature.
