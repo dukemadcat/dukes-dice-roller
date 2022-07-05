@@ -2,7 +2,7 @@ import DukesDiceForm from "../applications/dukes-dice-form.mjs";
 import DukesDicePopout from "./popout.mjs";
 
 Hooks.on('renderSceneControls', (controls, html) => {
-    DukesDicePopout.appendPopout(html);
+    DukesDicePopout.appendPopout($('body'));
 });
 
 Hooks.on('getSceneControlButtons', (controls) => {
@@ -14,8 +14,8 @@ Hooks.on('getSceneControlButtons', (controls) => {
             icon: "fas fa-dice-d20",
             tools: [
                 {
-                    name: "dukes-questlog-button",
-                    title: "The Duke´s Questlog",
+                    name: "dukes-dice-button",
+                    title: "The Duke´s Dice Roller",
                     icon: "fas fa-dice-d20",
                     button: true,
                     onClick: () => { }

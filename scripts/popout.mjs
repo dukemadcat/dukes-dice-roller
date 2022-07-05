@@ -2,6 +2,8 @@ import DukesUtilities from "../scripts/utilities.mjs";
 
 export default class DukesDicePopout {
     static appendPopout(html) {
+        if ($(html).find('.dukes-dice-popout').length > 0) return;
+
         let p = this.createPopOut();
 
         html.append(p);

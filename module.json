@@ -1,24 +1,35 @@
 {
-    "name": "dukes-dice-roller",
-    "title": "The Duke´s dice roller",
-    "description": "A simple roll20 inspired dice roller for dnd5e.",
-    "author": "dukemadcat",
-    "version": "1.0.11",
-    "minimumCoreVersion": "0.7.9",
-    "compatibleCoreVersion": "0.7.10",
-    "url": "https://github.com/dukemadcat/dukes-dice-roller/",
-    "bugs": "https://github.com/dukemadcat/dukes-dice-roller/issues",
-    "readme": "https://github.com/dukemadcat/dukes-dice-roller/wiki",
-    "manifest": "https://raw.githubusercontent.com/dukemadcat/dukes-dice-roller/main/module.json",
-    "download": "https://github.com/dukemadcat/dukes-dice-roller/archive/1.0.10.zip",
-    "system": "dnd5e",
-    "esmodules": [
-        "./scripts/init.mjs"
-    ],
-    "styles": [
-        "./styles/dukes-dice-form.css",
-        "./styles/dukes-dice-item-list.css",
-        "./styles/dukes-dice-button.css",
-        "./styles/dukes-dice-popout.css"
-    ]
+  "name": "dukes-dice-roller",
+  "title": "The Duke´s dice roller",
+  "description": "A simple roll20 inspired dice roller for dnd5e.",
+  "author": "dukemadcat",
+  "authors": [],
+  "url": "https://github.com/dukemadcat/dukes-dice-roller/",
+  "readme": "https://github.com/dukemadcat/dukes-dice-roller/wiki",
+  "bugs": "https://github.com/dukemadcat/dukes-dice-roller/issues",
+  "flags": {},
+  "version": "1.0.12",
+  "minimumCoreVersion": "9.269",
+  "compatibleCoreVersion": "9.269",
+  "scripts": [],
+  "esmodules": [
+    "./scripts/init.mjs"
+  ],
+  "styles": [
+    "./styles/dukes-dice-form.css",
+    "./styles/dukes-dice-item-list.css",
+    "./styles/dukes-dice-button.css",
+    "./styles/dukes-dice-popout.css"
+  ],
+  "languages": [],
+  "packs": [],
+  "system": [
+    "dnd5e"
+  ],
+  "dependencies": [],
+  "socket": false,
+  "manifest": "https://raw.githubusercontent.com/dukemadcat/dukes-dice-roller/main/module.json",
+  "download": "https://github.com/dukemadcat/dukes-dice-roller/archive/1.0.12.zip",
+  "protected": false,
+  "coreTranslation": false
 }
